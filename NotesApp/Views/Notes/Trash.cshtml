@@ -1,0 +1,55 @@
+﻿@model System.Collections.Generic.List<tblNote>
+@using NotesApp.Data.Models;
+@using Newtonsoft.Json;
+
+
+@{
+    Layout = "~/Views/Shared/TempLayout.cshtml";
+}
+
+<sidenav></sidenav>
+<body ng-controller="NotesController" style="background-color:gainsboro">
+    <div style="background-color:gainsboro">
+        @if (Model != null)
+        {
+            <div ng-cloak layout="row" flex-offset="20" layout-align-xs="center" layout-xs="row" layout-sm="row" layout-md="row" style="flex-wrap:wrap; ">
+                @foreach (tblNote obj in Model.Reverse<tblNote>())
+                {
+                    if ( obj.IsTrash == 1)
+                    {
+                        <md-card class="showicon" ng-style="CustomStyle" flex="20" flex-xs="50" flex-sm="33" flex-md="25" flex-lg="25" style="word-wrap:break-word;height:100%!important;background-color:@obj.ColorCode">
+                            <div>
+                                <div style="padding-left:10px;">
+                                    <h3 style="white-space: pre-line">@obj.Title</h3>
+                                </div>
+                                <div style="padding-left:10px;font-size:16px">
+                                    <span style="white-space: pre-line;">@obj.Content</span>
+                                </div>
+                            </div>
+
+                            <div class="showicon" layout="row" layout-align="space-around end" style="margin-bottom:15px">
+
+
+                                <md-menu class="icon">
+                                    <button ng-click="openMenu($mdMenu, $event)" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_more_vert_black_24px.svg"> </md-icon>
+                                    </button>
+                                    <md-menu-content width="3">
+                                        <md-menu-item layout="column" style="height:100px">
+                                            <md-button ng-click="DeleteForever(@JsonConvert.SerializeObject(obj))">Delete Forever</md-button>
+                                            <md-button ng-click="Restore(@JsonConvert.SerializeObject(obj))">Restore </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                    <span class="more">More</span>
+                                </md-menu>
+                            </div>
+
+                        </md-card>
+                    }
+
+                }
+
+            </div>
+        }
+    </div>
+</body>

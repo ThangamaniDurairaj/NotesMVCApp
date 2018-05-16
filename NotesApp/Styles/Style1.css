@@ -1,0 +1,183 @@
+﻿body {
+}
+
+.topnav {
+    z-index: 1000;
+    height: 70px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    background-color: #fb0;
+    font-family: 'Product Sans',Arial,sans-serif;
+    font-size: 15px;
+}
+.topfixed {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top:0;
+    border-width: 0 0 1px;
+
+}
+.card{
+    margin:auto;
+}
+.reg{
+    height:500px;
+}
+
+
+/*Cards Style*/
+div:empty:before {
+    content: attr(data-placeholder);
+    color: black;
+    font-size: large;
+    padding-left: 20px;
+}
+
+.md-button.raised {
+    min-width: 1%;
+}
+
+div.showicon {
+    opacity: 0.7;
+    visibility: hidden;
+}
+
+md-card.showicon:hover button {
+    visibility: visible;
+    opacity: 1.0;
+    display: block;
+}
+
+/*button.test:hover md-card.showicon
+        {
+            visibility:visible;
+            display:block;
+        }*/
+
+
+.icon .remainder {
+    visibility: hidden;
+    background-color: darkgray;
+    color: black;
+    width: 100px;
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 6px;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.icon:hover .remainder {
+    visibility: visible;
+}
+.icon .addImage {
+    visibility: hidden;
+    background-color: darkgray;
+    color: black;
+    width: 100px;
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 6px;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.icon:hover .addImage {
+    visibility: visible;
+}
+
+.icon .archive {
+    visibility: hidden;
+    background-color: darkgray;
+    color: black;
+    width: 80px;
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 6px;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.icon:hover .archive {
+    visibility: visible;
+}
+
+.icon .pin {
+    visibility: hidden;
+    background-color: darkgray;
+    color: black;
+    font-weight: 600;
+    font-size: 12px;
+    width: 50px;
+    border-radius: 6px;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.icon:hover .pin {
+    visibility: visible;
+}
+
+
+.icon .color {
+    visibility: hidden;
+    background-color: darkgray;
+    color: black;
+    width: 80px;
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 6px;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.icon:hover .color {
+    visibility: visible;
+}
+.icon .more {
+    visibility: hidden;
+    background-color: darkgray;
+    color: black;
+    width: 50px;
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 6px;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.icon:hover .more {
+    visibility: visible;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    text-align: center;
+    padding: 4px 7px 2px 4px;
+    border-radius: 20px;
+}
+
+
+.dropdown-content1 {
+    display: none;
+    min-width: 160px;
+    position: absolute;
+    border-radius: 10px;
+}

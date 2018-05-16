@@ -1,0 +1,40 @@
+﻿
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-1.12.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var data = document.URL.split("=");
+            var access_token = data[1].split("&")[0];
+            
+            var external = '{ExternalAccessToken: "' + access_token + '"}';
+            $.ajax({
+                type: 'POST',
+                url: 'https://' + window.location.host + '/Account/RegisterExternal',
+                headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + access_token },
+                data: external,
+                dataType: 'json',
+                success: function (response) {
+                    alert("Success");
+                    window.location.href = "/Notes/GetNotes";
+                },
+                error: function (response) {
+                    var id = JSON.stringify(response.responseText);
+                    window.location.href = "/Notes/GetNotes/#/userid=" + id;
+                },
+                faliure: function (response) {
+                    alert("Faliure");
+                }
+            });
+
+        });
+    </script>
+</head>
+
+</html>

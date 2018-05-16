@@ -1,0 +1,130 @@
+﻿@using NotesApp.Data.Models
+@using Microsoft.Owin.Security
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+@{
+    Layout = "~/Views/Shared/TempLayout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dialog').delay(2000).fadeOut();
+    })
+
+</script>
+<body ng-controller="AccountCtrl">
+    <header></header>
+    @{
+        var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+
+       
+    }
+    <div layout="row" style="margin-top:70px; ">
+        <md-content style="margin:auto">
+            <md-card style="width:500px" flex-lg="90" flex-md="90" flex-sm="90" flex-xs="90">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "sign", @name = "sign" }))
+                {
+                    @*@Html.AntiForgeryToken()*@
+
+                    <div style="padding-left:40px">
+                        <md-card-title>
+                            <md-card-title-text>
+                                @*<span style="margin:10px 55px 40px  ; font-size:xx-large;font-weight:bold">NotesApp</span>*@
+                                <span style="margin-bottom:15px;font-size:xx-large;font-weight:bold">SignIn</span>
+                                <span class="md-headline">With your Account </span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <div layout="row">
+                            <md-input-container flex-lg="90" flex-md="90" flex-sm="90" flex-xs="90">
+                                <label>Email</label>
+                                <input type="text" id="email" name="email" ng-model="email" required />
+                            </md-input-container>
+                        </div>
+
+                        <div layout="row">
+                            <md-input-container flex-lg="90" flex-md="90" flex-sm="90" flex-xs="90">
+                                <label>Password</label>
+                                <input type="password" id="password" name="password" ng-model="password" required />
+                            </md-input-container>
+                        </div>
+
+                        <md-card-actions layout-align="center" layout-xs="column">
+                            <md-button ng-click="showPromptForgot($event)" style="font-weight:600">FORGOT PASSWORD?</md-button>
+                            <md-button ng-click="showPromptOTP($event)" style="font-weight:600">SEND AND VERIFY OTP</md-button>
+                        </md-card-actions>
+
+                        @*<div ng-if="status" id="status">
+                                <b layout="row" layout-align="center center" class="md-padding">
+                                    {{status}}
+                                </b>
+                            </div>*@
+
+                        <div>
+                            <md-card-actions>
+                                <md-button style="color:blue;font-weight:bold" ng-click="Register()">CREATE ACCOUNT</md-button>
+                            </md-card-actions>
+                        </div>
+                        <div style="margin-bottom:0px" layout="row">
+                            <div style="margin-left:250px">
+                                <md-button style="font-weight:600" class="md-raised md-primary" type="submit" id="sign" ng-click="sign()" ng-disabled="sign.$invalid">SIGN IN</md-button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = LoginViewModel.ReturnUrl }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div style="padding-left:40px" id="socialLoginList">
+                        <p>
+                            @foreach (AuthenticationDescription p in loginProviders)
+                            {
+                                if (p.AuthenticationType == "Google")
+                                {
+                                    <md-button class="md-fab md-hue-2" aria-label="" style="background-color:#dc4a38" type="submit" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">
+                                        <b style="font:xx-large;font-size:xx-large; text-transform :uppercase;">g</b>
+                                        <md-icon>
+                                        </md-icon>
+                                    </md-button>
+                                }
+                                if (p.AuthenticationType == "Facebook")
+                                {
+
+                                    <md-button class="md-fab md-primary md-hue-2" aria-label="Profile" type="submit" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">
+                                        <b style="font:xx-large;font-size:xx-large; text-transform :lowercase;">f</b>
+                                        <md-icon></md-icon>
+                                    </md-button>
+                                }
+
+                                @*<button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>*@
+                            }
+                        </p>
+                    </div>
+                }
+            </md-card>
+
+        </md-content>
+        @if (TempData["LoginFaliure"] != null)
+        {
+            <div layout="row" layout-align="end start">
+                <label class="alert alert-success" id="dialog">@TempData["LoginFaliure"]</label>
+            </div>
+        }
+
+        @if (TempData["InEmailPassword"] != null)
+        {
+            <div layout="row" layout-align="end start">
+                <label class="alert alert-success" id="dialog">@TempData["InEmailPassword"]</label>
+            </div>
+        }
+        @if (TempData["RegisterSuccess"] != null)
+        {
+            <div layout="row" layout-align="end start">
+                <label class="alert alert-success" id="dialog">@TempData["RegisterSuccess"]</label>
+            </div>
+        }
+    </div>
+
+
+
+</body>

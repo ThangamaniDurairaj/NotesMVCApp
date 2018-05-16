@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("VerifyPhoneNumber", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div style="background-color:#fb0;height:50px;font-weight:bold;font-size:xx-large;padding-top:8px">
+                VERIFY OTP
+                <md-button class="md-icon-button" ng-click="cancel()" style="margin-left:250px">
+                    <b style="font-size:30px">X</b> <md-icon aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+            <md-card style="width:500px">
+                <div style="padding-left:40px">
+                    <md-input-container>
+                        <label>Email</label>
+                        <input type="text" id="email" name="email" ng-model="email" required />
+                    </md-input-container>
+                    <md-input-container>
+                        <label>OTP</label>
+                        <input type="text" id="otp" name="otp" />
+                    </md-input-container>
+
+                </div>
+
+                <md-button ng-click="answer(email)" type="submit">
+                    VERIFY
+                </md-button>
+            </md-card>
+        }
+    </div>
+
+</body>
+
+</html>

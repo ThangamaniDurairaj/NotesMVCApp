@@ -1,0 +1,677 @@
+﻿@model System.Collections.Generic.List<tblNote>
+@using NotesApp.Data.Models;
+@using Newtonsoft.Json;
+
+@{
+    Layout = "~/Views/Shared/TempLayout.cshtml";
+}
+
+
+@*<head>
+    <style>
+        div:empty:before {
+            content: attr(data-placeholder);
+            color: black;
+            font-size: large;
+            padding-left: 20px;
+        }
+
+        .md-button.raised {
+            min-width: 1%;
+        }
+
+        div.showicon {
+            opacity: 0.7;
+            visibility: hidden;
+        }
+
+        md-card.showicon:hover button {
+            visibility: visible;
+            opacity: 1.0;
+            display: block;
+        }
+
+        /*button.test:hover md-card.showicon
+        {
+            visibility:visible;
+            display:block;
+        }*/
+
+
+        .icon .remainder {
+            visibility: hidden;
+            background-color: darkgray;
+            color: black;
+            width: 100px;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 6px;
+            text-align: center;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .icon:hover .remainder {
+            visibility: visible;
+        }
+
+        .icon .addImage {
+            visibility: hidden;
+            background-color: darkgray;
+            color: black;
+            width: 100px;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 6px;
+            text-align: center;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .icon:hover .addImage {
+            visibility: visible;
+        }
+
+        .icon .archive {
+            visibility: hidden;
+            background-color: darkgray;
+            color: black;
+            width: 80px;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 6px;
+            text-align: center;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .icon:hover .archive {
+            visibility: visible;
+        }
+
+        .icon .pin {
+            visibility: hidden;
+            background-color: darkgray;
+            color: black;
+            font-weight: 600;
+            font-size: 12px;
+            width: 50px;
+            border-radius: 6px;
+            text-align: center;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .icon:hover .pin {
+            visibility: visible;
+        }
+
+        .icon .more {
+            visibility: hidden;
+            background-color: darkgray;
+            color: black;
+            width: 50px;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 6px;
+            text-align: center;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .icon:hover .more {
+            visibility: visible;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            overflow: auto;
+            text-align: center;
+            padding: 4px 7px 2px 4px;
+            border-radius: 20px;
+        }
+
+
+        .dropdown-content1 {
+            display: none;
+            min-width: 160px;
+            position: absolute;
+            border-radius: 10px;
+        }
+
+        .icon .color {
+            visibility: hidden;
+            background-color: darkgray;
+            color: black;
+            width: 80px;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 6px;
+            text-align: center;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .icon:hover .color {
+            visibility: visible;
+        }
+
+        .listgrid {
+            width: 60%;
+        }
+    </style>
+</head>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var url = document.URL.split("=")[1];
+        //var UserID = url.slice(3, -3);
+        //localStorage.setItem("UserId", UserID);
+
+        $('#successMessage').delay(2000).fadeOut();
+
+        document.getElementById("mybutton").onclick = function () { myFunction() };
+
+        function myFunction() {
+            document.getElementById("dropdown").classList.toggle("show");
+        }
+
+
+    });
+
+
+
+</script>
+
+<sidenav></sidenav>
+
+
+<body ng-controller="NotesController" style="max-height:100%;background-color:gainsboro;">
+
+    @*@using (Html.BeginForm("Fun", "Notes", FormMethod.Post, new { @id = "note", @name = "note", @class = "form-horizontal", role = "form" }))
+        {*@
+    <div id="page" ng-style="myStyle" style="background-color:gainsboro;">
+        <div layout="row" style="margin-bottom:20px">
+            <md-card ng-style="CustomNote" ng-model="primary" flex-md="50" flex-xs="80" md-dynamic-height ng-click="showme=true" style="width:500px;margin:auto;margin-top:25px;outline:none">
+                <h4 ng-hide="showme" style="padding-left:10px">Take a note....</h4>
+
+                <div layout="row">
+                    <div ng-show="showme" flex="90" contenteditable="true" data-placeholder="Title" style="outline:none;padding-top:10px" id="Title" name="Title" ng-model="Title"></div>
+                    <div ng-show="showme" flex="10" class="icon" style="margin-top:5px">
+                        <button ng-click="isPin()" style="border:none; background:transparent;margin-bottom:10px">
+                            <md-icon md-svg-icon="~/Images/pinned.svg"></md-icon>
+                        </button>
+                        <span class="pin">Pin </span>
+                    </div>
+                </div>
+
+                <md-input-container ng-show="showme">
+
+                    <label></label>
+                    <textarea type="text" style="width:800px !important;outline:none;border:none" id="Content" placeholder="Take a Note...." name="Content" ng-model="Content"></textarea>
+
+                </md-input-container>
+
+
+                <div ng-show="showme">
+                    <div layout="row" layout-align="space-around end">
+
+
+                        <md-menu>
+                            <div class="icon">
+                                <button style="border:none; background:transparent;margin-bottom:10px">
+                                    <md-icon md-svg-icon="~/Images/download.svg"></md-icon>
+                                </button>
+                                <span class="remainder">Remainder</span>
+                            </div>
+                            @*<md-menu-content ng-mouseenter="$mdMenu.open()" ng-mouseleave="$mdMenu.close()" width="2">
+                                    <md-menu-item>
+
+                                    </md-menu-item>
+                                </md-menu-content>*@
+                        </md-menu>
+
+
+                        <md-menu>
+                            <button ng-mouseenter="$mdMenu.open()" style="border:none; background:transparent;margin-bottom:10px">
+                                <md-icon md-svg-icon="~/Images/ic_color_lens_black_24px.svg"></md-icon>
+                            </button>
+                            <md-menu-content ng-mouseleave="$mdMenu.close()" style="height:80px;">
+                                <md-menu-item>
+                                    <div>
+                                        <div style="margin-bottom:5px">
+                                            <button ng-click="notecolor('rgb(130, 177, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(130, 177, 255)">
+                                                <md-icon md-svg-src=""></md-icon>
+                                            </button>
+
+                                            <button ng-click="notecolor(' rgb(248, 187, 208)')" style="border-radius:100%;outline:none;border:none ;background-color: rgb(248, 187, 208)">
+                                                <md-icon md-svg-src=""></md-icon>
+                                            </button>
+
+                                            <button ng-click="notecolor(' rgb(179, 136, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(179, 136, 255)">
+                                                <md-icon md-svg-src=""></md-icon>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button ng-click="notecolor(' rgb(255, 255, 141)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(255, 255, 141)">
+                                                <md-icon md-svg-src=""></md-icon>
+                                            </button>
+
+                                            <button ng-click="notecolor(' rgb(204, 255, 144)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(204, 255, 144)">
+                                                <md-icon md-svg-src=""></md-icon>
+                                            </button>
+
+                                            <button ng-click="notecolor('rgb(207, 216, 220)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(207, 216, 220)">
+                                                <md-icon md-svg-src=""></md-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+
+                        <div class="icon">
+                            <button style="border:none; background:transparent;margin-bottom:10px">
+                                <md-icon md-svg-icon="~/Images/ic_insert_photo_black_24px.svg"></md-icon>
+                            </button>
+                            <span class="addImage">Add image</span>
+                        </div>
+
+
+                        <div class="icon">
+                            <button style="border:none; background:transparent;margin-bottom:10px">
+                                <md-icon md-svg-icon="~/Images/ic_archive_black_24px.svg"> </md-icon>
+                            </button>
+                            <span class="archive">Archive</span>
+                        </div>
+
+
+                        @*<div class="icon">
+                                <button style="border:none; background:transparent;margin-bottom:10px">
+                                    <md-icon md-svg-icon="~/Images/pinned.svg"></md-icon>
+                                </button>
+                                <span class="pin">Pin </span>
+                            </div>*@
+
+                        <div class="icon">
+                            <button id="mybutton" style="border:none; background:transparent;margin-bottom:10px">
+                                <md-icon md-svg-icon="~/Images/ic_more_vert_black_24px.svg"> </md-icon>
+                            </button>
+                            <div id="dropdown" class="dropdown-content">
+                                <button style="background:transparent;border:none;outline:none">Delete Note</button>
+                            </div>
+                            <span class="more">More</span>
+                        </div>
+
+                        <div style="display:inline" layout="row" layout-align="end end">
+                            <md-button ng-model="UserId" class="raised " type="submit" ng-click="Addnote(UserId)">DONE</md-button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </md-card>
+        </div>
+
+        @if (Model != null)
+        {
+            <div ui-sortable ng-cloak layout="column" @*ng-show="layout == 'list'"*@ flex-offset="25" layout-align="center" layout-wrap layout-xs="column" layout-sm="column" layout-md="column" style="flex-wrap:wrap;">
+                <label>Pinned</label>
+
+                @foreach (tblNote obj in Model.Reverse<tblNote>())
+                {
+                    if (@obj.IsPin == 1)
+                    {
+                        <md-card class="showicon" style="word-wrap:break-word;height:100%!important;background-color:@obj.ColorCode;width:500px">
+
+                            <div ng-click="PopUp($event,@JsonConvert.SerializeObject(obj))">
+                                <div layout="row" style="padding-left:10px;">
+                                    <div flex="90"><h3 style="white-space: pre-line">@obj.Title</h3></div>
+                                    <div class=" icon" flex="10" style="margin-top:5px">
+                                        <button ng-click="PinNote(@JsonConvert.SerializeObject(obj))" style="border:none; background:transparent;margin-bottom:10px">
+                                            <md-icon md-svg-icon="~/Images/pinned.svg"></md-icon>
+                                        </button>
+                                        <span class="pin">Pin </span>
+                                    </div>
+                                </div>
+                                <div style="padding-left:10px;font-size:16px">
+                                    <span style="white-space: pre-line;">@obj.Content</span>
+                                </div>
+
+                                @if (obj.ImageUrl != null)
+                                {
+                                    <img src="@obj.ImageUrl" style="width:100%;height:auto;" />
+
+                                }
+                            </div>
+                            @if (obj.Reminder != null)
+                            {
+                                <md-chips md-removable="true" readonly="false">
+                                    <md-chip>
+                                        <p>
+                                            @obj.Reminder  <md-icon md-svg-icon="~/Images/ic_cancel_black_18px.svg" ng-click="remove(@JsonConvert.SerializeObject(obj))" style="opacity:0.5"></md-icon>
+                                        </p>
+                                    </md-chip>
+                                </md-chips>
+                            }
+
+                            <div class="showicon" layout="row" layout-align="space-around end" style="margin-bottom:15px">
+                                <md-menu class="icon">
+                                    <button ng-click="openMenu($mdMenu, $event)" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/download.svg"></md-icon>
+                                    </button>
+                                    <md-menu-content width="4">
+                                        <md-menu-item layout="column" style="height:100%">
+                                            <h5>Reminder:</h5>
+                                            <md-button ng-click="rem1(@JsonConvert.SerializeObject(obj))">Later Today   8:00PM</md-button>
+                                            <md-button ng-click="rem2(@JsonConvert.SerializeObject(obj))">Tomorrow      8:00AM</md-button>
+                                            <md-button ng-click="rem3(@JsonConvert.SerializeObject(obj))">Next Week     Mon,8:00PM</md-button>
+                                            <md-button ng-click="Pick()">
+                                                <md-icon md-svg-icon="~/Images/ic_alarm_black_24px.svg"></md-icon>
+                                                Pick Date and Time
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                    <span class="remainder">Reminder</span>
+
+                                </md-menu>
+                                @*<button  style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_color_lens_black_24px.svg"></md-icon>
+                                    </button>*@
+
+                                <md-menu class="showicon icon">
+                                    <button ng-click="openMenu($mdMenu, $event)" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_color_lens_black_24px.svg"></md-icon>
+                                    </button>
+
+                                    <md-menu-content style="height:80px;">
+                                        <md-menu-item>
+                                            <div>
+                                                <div style="margin-bottom:5px">
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),'rgb(130, 177, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(130, 177, 255)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(248, 187, 208)')" style="border-radius:100%;outline:none;border:none ;background-color: rgb(248, 187, 208);">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(179, 136, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(179, 136, 255)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(255, 255, 141)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(255, 255, 141)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(204, 255, 144)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(204, 255, 144)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),'rgb(207, 216, 220)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(207, 216, 220)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                    <span class="color">Color</span>
+
+                                </md-menu>
+
+                                <div class="icon">
+                                    <button style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_insert_photo_black_24px.svg" ng-click="uploadImage(@JsonConvert.SerializeObject(obj))" id="imagebutton"></md-icon>
+
+
+                                    </button>
+                                    <input style="display:none" type="file" id="file1" file-model="myFile" />
+                                    <span class="addImage">Add Image</span>
+
+                                </div>
+
+                                <div class="icon">
+                                    <button ng-click="addArchive(@JsonConvert.SerializeObject(obj))" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_archive_black_24px.svg"> </md-icon>
+                                    </button>
+                                    <span class="archive">Archive</span>
+                                </div>
+
+                                @*<div class="icon">
+                                        <button ng-click="PinNote(@obj.ID,@obj.IsPin)" style="border:none; background:transparent;">
+                                            <md-icon md-svg-icon="~/Images/pinned.svg"></md-icon>
+                                        </button>
+                                        <span class="pin">Pin</span>
+                                    </div>*@
+
+                                <md-menu class="icon">
+                                    <button ng-click="openMenu($mdMenu, $event)" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_more_vert_black_24px.svg"> </md-icon>
+                                    </button>
+                                    <md-menu-content width="3">
+                                        <md-menu-item layout="column" style="height:100px">
+                                            <md-button ng-click="Deletenote(@JsonConvert.SerializeObject(obj))">Delete Note</md-button>
+                                            <md-button ng-click="CopyNote(@JsonConvert.SerializeObject(obj))">Make a copy </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                    <span class="more">More</span>
+                                </md-menu>
+                            </div>
+                        </md-card>
+                    }
+
+                }
+            </div>
+            <div ui-sortable ng-cloak layout="column" flex-offset="25" layout-wrap layout-align="center"  style="flex-wrap:wrap; ">
+                <label>Others</label>
+                @foreach (tblNote obj in Model.Reverse<tblNote>())
+                {
+                    if (obj.IsTrash == 0 && obj.IsPin == 0 && obj.IsArchive == 0)
+                    {
+                        <md-card class="showicon" style="word-wrap:break-word;height:100%!important;background-color:@obj.ColorCode;width:500px">
+                            <div ng-click="PopUp($event,@JsonConvert.SerializeObject(obj))">
+                                <div layout="row" style="padding-left:10px;">
+                                    <div flex="90"><h3 style="white-space: pre-line">@obj.Title</h3></div>
+                                    <div class="showicon icon" flex="10" style="margin-top:5px">
+                                        <button ng-click="PinNote(@JsonConvert.SerializeObject(obj))" style="border:none; background:transparent;margin-bottom:10px">
+                                            <md-icon md-svg-icon="~/Images/pinned.svg"></md-icon>
+                                        </button>
+                                        <span class="pin">Pin </span>
+                                    </div>
+                                </div>
+                                <div style="padding-left:10px;font-size:16px">
+                                    <span style="white-space: pre-line;">@obj.Content</span>
+                                </div>
+                                @if (obj.ImageUrl != null)
+                                {
+                                    <img src="@obj.ImageUrl" style="width:100%;height:auto;" />
+
+                                }
+
+
+                            </div>
+
+                            @if (obj.Reminder != null)
+                            {
+                                <md-chips md-removable="true" readonly=false>
+                                    <md-chip-template>
+                                        <md-chip>
+                                            <p>
+                                                @obj.Reminder
+                                                <md-icon md-svg-icon="~/Images/ic_cancel_black_18px.svg" ng-click="remove(@JsonConvert.SerializeObject(obj))" style="opacity:0.5"></md-icon>
+                                            </p>
+                                        </md-chip>
+                                    </md-chip-template>
+                                </md-chips>
+                            }
+                            <div class="showicon" layout="row" layout-align="space-around end" style="margin-bottom:15px">
+                                <md-menu class="icon">
+                                    <button ng-click="openMenu($mdMenu, $event)" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/download.svg"></md-icon>
+                                    </button>
+                                    <md-menu-content width="4">
+                                        <md-menu-item layout="column" style="height:100%">
+                                            <h5>Reminder:</h5>
+                                            <md-button ng-click="rem1(@JsonConvert.SerializeObject(obj))">Later Today</md-button>
+                                            <md-button ng-click="rem2(@JsonConvert.SerializeObject(obj))">Tomorrow </md-button>
+                                            <md-button ng-click="rem3(@JsonConvert.SerializeObject(obj))">Next Week </md-button>
+                                            <div class="lead"
+                                                 moment-picker="ctrl.myInput">
+
+                                                <i class="glyphicon glyphicon-calendar"></i>&nbsp;
+                                                {{ ctrl.myInput || "Click here to select a date" }}
+
+                                            </div>
+
+                                            <input moment-picker="myDate" {{ myDate }} />
+                                            <md-button ng-click="reminderNote(note,myDate)" class="md-icon-button" aria-label="delete">
+
+                                                SET
+
+                                            </md-button>
+                                            @*<md-menu>
+                                                    <md-button ng-click="$mdMenu.open()">Pick Date</md-button>
+                                                    <md-menu-content>
+                                                        <md-menu-item>
+                                                            <md-datepicker ng-model="BirthDate" id="BirthDate" name="BirthDate" md-placeholder="Enter date">
+                                                            </md-datepicker>
+
+                                                            <md-button>SET</md-button>
+                                                        </md-menu-item>
+
+                                                    </md-menu-content>
+                                                </md-menu>*@
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                    <span class="remainder">Reminder</span>
+
+
+                                </md-menu>
+                                @*<button  style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_color_lens_black_24px.svg"></md-icon>
+                                    </button>*@
+
+                                <md-menu class="showicon icon">
+                                    <button ng-click="openMenu($mdMenu, $event)" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_color_lens_black_24px.svg"></md-icon>
+                                    </button>
+
+                                    <md-menu-content style="height:80px;">
+                                        <md-menu-item>
+                                            <div>
+                                                <div style="margin-bottom:5px">
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),'rgb(130, 177, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(130, 177, 255)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(248, 187, 208)')" style="border-radius:100%;outline:none;border:none ;background-color: rgb(248, 187, 208);">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(179, 136, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(179, 136, 255)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(255, 255, 141)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(255, 255, 141)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),' rgb(204, 255, 144)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(204, 255, 144)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+
+                                                    <button ng-click="color(@JsonConvert.SerializeObject(obj),'rgb(207, 216, 220)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(207, 216, 220)">
+                                                        <md-icon md-svg-src=""></md-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                    <span class="color">Color</span>
+
+                                </md-menu>
+
+
+                                <div class="icon">
+                                    <button style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_insert_photo_black_24px.svg" ng-click="uploadImage(@JsonConvert.SerializeObject(obj))" id="imagebutton"></md-icon>
+
+
+                                    </button>
+                                    <input style="display:none" type="file" id="file1" file-model="myFile" />
+                                    <span class="addImage">Add Image</span>
+
+                                </div>
+
+                                <div class="icon">
+                                    <button ng-click="addArchive(@JsonConvert.SerializeObject(obj))" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_archive_black_24px.svg"> </md-icon>
+                                    </button>
+                                    <span class="archive">Archive</span>
+                                </div>
+
+                                @*<div class="icon">
+                                        <button ng-click="PinNote(@obj.ID,@obj.IsPin)" style="border:none; background:transparent;">
+                                            <md-icon md-svg-icon="~/Images/pinned.svg"></md-icon>
+                                        </button>
+                                        <span class="pin">Pin</span>
+                                    </div>*@
+                                @*<div class="icon">
+                                        <button  style="border:none; background:transparent;margin-bottom:0px">
+                                            <md-icon md-svg-icon="~/Images/ic_more_vert_black_24px.svg"> </md-icon>
+                                        </button>
+                                        <span class="more">More</span>
+                                    </div>*@
+
+                                <md-menu class="icon">
+                                    <button ng-click="openMenu($mdMenu, $event)" style="border:none; background:transparent;">
+                                        <md-icon md-svg-icon="~/Images/ic_more_vert_black_24px.svg"> </md-icon>
+                                        @*<input type="file" file-model="myFile" />*@
+
+                                    </button>
+                                    <md-menu-content width="3">
+                                        <md-menu-item layout="column" style="height:100px">
+                                            <md-button ng-click="Deletenote(@JsonConvert.SerializeObject(obj))">Delete Note</md-button>
+                                            <md-button ng-click="CopyNote(@JsonConvert.SerializeObject(obj))">Make a copy </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                    <span class="more">More</span>
+                                </md-menu>
+                            </div>
+
+                        </md-card>
+                    }
+
+                }
+            </div>
+        }
+        else
+        {
+
+        }
+        @*}*@
+    </div>
+
+</body>
+
+@if (TempData["Login"] != null)
+{
+    <div layout="row" layout-align="end start">
+        <label class="alert alert-success" id="successMessage">@TempData["Login"]</label>
+    </div>
+}
+
+
+
+

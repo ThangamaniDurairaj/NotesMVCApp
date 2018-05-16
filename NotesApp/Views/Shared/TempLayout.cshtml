@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title My App</title>
+    <link href="~/Styles/Style1.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link href="~/Content/angular-material.min.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/angular-material.min.js"></script>
+    <script src="~/Scripts/angular-animate.min.js"></script>
+    <script src="~/Scripts/angular-aria.min.js"></script>
+    <script src="~/Scripts/angular-messages.min.js"></script>
+    <script src="~/Scripts/angular-ui-router.js"></script>
+    <script src="~/Scripts/angular-ui-router.min.js"></script>
+
+    <script src="~/Scripts/angular-drag-and-drop-lists.min.js"></script>
+
+
+    <script src="~/Scripts/sortable.js"></script>
+    <script src="~/Scripts/app.js"></script>
+    <script src="~/Scripts/AccountController/AccountCntrl.js"></script>
+    <script src="~/Scripts/NoteController/NoteCntrl.js"></script>
+    <script src="~/Directive/SideNav.js"></script>
+    <script src="~/Directive/Header.js"></script>
+
+</head>
+<body ng-app="myApp" ui-view>
+
+    @*<div class="topnav topfixed " layout="row">
+            <div flex-lg="100" flex-md="100" flex-sm="20" flex-xs="10">
+                <h1 style="margin:15px 100px">NotesApp</h1>
+            </div>
+        </div>*@
+    <div>
+        @RenderBody()
+        @RenderSection("SPAViews", required: false)
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

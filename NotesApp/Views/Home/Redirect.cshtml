@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/Views/Shared/TempLayout.cshtml";
+}
+
+@*@{
+    TempData["access_token"] = access_token;
+}*@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var data = document.URL.split("=");
+            var access_token = data[1].split("&")[0];
+            var external = '{ExternalAccessToken: "' + access_token + '"}';
+            $.ajax({
+                type: 'POST',
+                url: 'https://' + window.location.host + '/Account/RegisterExternal',
+                headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + access_token },
+                data: external,
+                dataType: 'json',
+                success: function (response) {
+                    alert("Success");
+                    window.location.href = "/Notes/GetNotes";
+                },
+                error: function (response) {
+                    var id = JSON.stringify(response.responseText);
+                    window.location.href = "/Notes/GetNoteExternal/#/userid=" + id;
+                },
+                faliure: function (response) {
+                    alert("Faliure");
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div>
+
+    </div>
+</body>
+</html>

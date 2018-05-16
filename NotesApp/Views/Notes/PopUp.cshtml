@@ -1,0 +1,124 @@
+﻿@{
+    Layout = null;
+}
+@using Newtonsoft.Json;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div style="min-height:200px;background-color:{{$ctrl.colorselected}}">
+        <div style="width:600px;">
+            <div layout="row">
+                <div flex="90">
+                    <!--<div>ID is {{ $ctrl.ID}}</div>-->
+                    <md-input-container style="height:10px;">
+                        <label></label>
+                        <input type="text" ng-model="$ctrl.Title" style="outline:none;border:none" placeholder="Title" />
+                    </md-input-container>
+                </div>
+                <div flex="10" style="margin-top: 18px;" ng-model="$ctrl.IsPin" ng-click="$ctrl.IsPin($ctrl)">
+                    <md-icon md-svg-icon="~/Images/pinned.svg"></md-icon>
+                    <md-tooltip>Pin Note</md-tooltip>
+
+                </div>
+            </div>
+            <div layout="column">
+                <div>
+                    <md-input-container style="height:10px;">
+                        <label></label>
+                        <input type="text" ng-model="$ctrl.Content" style="outline:none;border:none" placeholder="Take a Note" />
+                    </md-input-container>
+                </div>
+
+            </div>
+            @*<div ng-if="$ctrl.imgsrc!=null" layout="column">
+                    <img src="{{$ctrl.imgsrc}}" style="width:100%;height:270px;" ng-model="$ctrl.imgsrc" />
+                </div>*@
+            <div flex-lg="80" flex-md="80" flex-sm="90" flex-xs="100" layout="row" style="margin-top: 46px;">
+                <md-button flex>
+                    <md-icon md-svg-icon="~/Images/download.svg" style="outline:none">
+                        <md-tooltip>Reminder</md-tooltip>
+                    </md-icon>
+                </md-button>
+
+
+                <md-menu>
+                    <md-button ng-mouseenter="$mdMenu.open()" style="border:none; background:transparent;">
+                        <md-icon md-svg-icon="~/Images/ic_color_lens_black_24px.svg"></md-icon>
+                        <md-tooltip>Color</md-tooltip>
+                    </md-button>
+                    <md-menu-content ng-mouseleave="$mdMenu.close()" style="height:80px;">
+                        <md-menu-item>
+                            <div>
+                                <div style="margin-bottom:5px">
+                                    <button ng-click="$ctrl.color($ctrl,'rgb(130, 177, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(130, 177, 255)">
+                                        <md-icon md-svg-src=""></md-icon>
+                                    </button>
+
+                                    <button ng-click="$ctrl.color($ctrl,' rgb(248, 187, 208)')" style="border-radius:100%;outline:none;border:none ;background-color: rgb(248, 187, 208);">
+                                        <md-icon md-svg-src=""></md-icon>
+                                    </button>
+
+                                    <button ng-click="$ctrl.color($ctrl,'rgb(179, 136, 255)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(179, 136, 255)">
+                                        <md-icon md-svg-src=""></md-icon>
+                                    </button>
+                                </div>
+                                <div>
+                                    <button ng-click="$ctrl.color($ctrl,'rgb(255, 255, 141)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(255, 255, 141)">
+                                        <md-icon md-svg-src=""></md-icon>
+                                    </button>
+
+                                    <button ng-click="$ctrl.color($ctrl,'rgb(204, 255, 144)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(204, 255, 144)">
+                                        <md-icon md-svg-src=""></md-icon>
+                                    </button>
+
+                                    <button ng-click="$ctrl.color($ctrl,'rgb(207, 216, 220)')" style="border-radius:100%;outline:none;border:none ;background-color:rgb(207, 216, 220)">
+                                        <md-icon md-svg-src=""></md-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+
+                <md-button flex>
+                    @*<md-icon md-svg-icon="" ng-click="$ctrl.uploadImage($ctrl)" fill="grey" style="outline:none">
+                            <md-tooltip>Upload Your Image</md-tooltip>
+                        </md-icon>
+                        <input type="file" id="file1" style="display:none" />*@
+
+                    <md-icon md-svg-icon="~/Images/ic_insert_photo_black_24px.svg"></md-icon>
+                    <md-tooltip>Image Upload</md-tooltip>
+                </md-button>
+                <md-button flex ng-click="$ctrl.IsArchive($ctrl)">
+                    <md-icon md-svg-icon="~/Images/ic_archive_black_24px.svg" style="outline:none">
+                        <md-tooltip>Archive</md-tooltip>
+                    </md-icon>
+                </md-button>
+                <md-menu>
+                    <md-button flex>
+                        <md-icon md-svg-icon="~/Images/ic_more_vert_black_24px.svg" style="outline:none" ng-mouseenter="$mdMenu.open()">
+                            <md-tooltip>Menu</md-tooltip>
+                        </md-icon>
+                    </md-button>
+                    <md-menu-content width="3">
+                        <md-menu-item layout="column" style="height:100px">
+                            <md-button ng-click="$ctrl.Deletenote($ctrl)">Delete Note</md-button>
+                            <md-button>Copy Note </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-button flex ng-click="$ctrl.AddNote($ctrl)">
+                    <strong>Done</strong>
+                </md-button>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
