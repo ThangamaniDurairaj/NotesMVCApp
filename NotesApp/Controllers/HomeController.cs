@@ -13,8 +13,6 @@ namespace NotesApp.Controllers
         {
             var url = Request.Url;
 
-            //return RedirectToAction("GetNotes", "Notes");..
-
             return View();
         }
 
@@ -34,7 +32,5 @@ namespace NotesApp.Controllers
         {
             return View();
         }
-
-
     }
 }

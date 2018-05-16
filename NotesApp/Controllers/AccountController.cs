@@ -49,15 +49,12 @@ namespace NotesApp.Controllers
 
         }
 
-
-
         [AllowAnonymous]
         [Route("Token")]
         public async Task<string> Token(LoginViewModel context)
         {
             try
             {
-
                 string access_token = await WebApiController.GenerateTokenAsync(context);
 
                 token = access_token;
@@ -81,9 +78,6 @@ namespace NotesApp.Controllers
             try
             {
                 var client = new HttpClient();
-                //var url = Request.Url;
-                //var returnurl = "https://localhost:44399/api/NotesApi/AddNote";
-
                 string returnurl = CurrentUrl + "/api/NotesApi/AddNote";
 
                 client.BaseAddress = new Uri(returnurl);
@@ -125,22 +119,13 @@ namespace NotesApp.Controllers
             var list = new List<tblNote>();
             try
             {
-
                 var client = new HttpClient();
-
-
-                //var url = Request.Url;
-                //var returnurl = url.Scheme + "://" + url.Host + ":" + url.Port + "/api/NotesApi/GetNotes";
-
                 string returnurl = CurrentUrl + "/api/NotesApi/GetNotes";
-
-              
 
                 client.BaseAddress = new Uri(returnurl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
 
                 var response = await client.GetAsync(returnurl);
                 var contents = await response.Content.ReadAsStringAsync();
@@ -150,7 +135,6 @@ namespace NotesApp.Controllers
                 {
                     list.Add(item);
                 }
-
             }
             catch (Exception ex)
             {
@@ -261,7 +245,6 @@ namespace NotesApp.Controllers
 
         }
 
-
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
@@ -269,18 +252,15 @@ namespace NotesApp.Controllers
             return View();
         }
 
-
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 await WebApiController.ForgotPassword(model);
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
-
             }
 
             // If we got this far, something failed, redisplay form
@@ -413,33 +393,21 @@ namespace NotesApp.Controllers
                 return Redirect(returnUrl);
             }
             return RedirectToAction("Index", "Home");
-            //return RedirectToAction("GetNotes", "Notes");
-
         }
-
 
         // POST:/Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    return RedirectToAction("Index", "Manage");
-            //}
-
             if (ModelState.IsValid)
             {
                 var result = await WebApiController.ExternalLoginConfirmation(model, returnUrl);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
-                    // return RedirectToAction("GetNotes", "Notes");
-
                 }
             }
-
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
@@ -450,14 +418,10 @@ namespace NotesApp.Controllers
         [AllowAnonymous]
         public async Task<string> RegisterExternal(ExternalLoginBindingModel external)
         {
-            //var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-
             AccountsRepository accountsRepository = new AccountsRepository();
             var result = await accountsRepository.RegisterExternal(external);
             return result;
         }
-
-
 
         [AllowAnonymous]
         [HttpGet]
@@ -466,17 +430,6 @@ namespace NotesApp.Controllers
             return View();
         }
 
-        ////GET: /Account/GetInfo
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public List<tblNote> GetInfo(string UserID)
-        //{
-        //    var list = new List<tblNote>();
-
-        //    AccountsRepository accountsRepository = new AccountsRepository();
-        //    list = accountsRepository.GetInfo(UserID);
-        //    return list;
-        //}
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Logout()

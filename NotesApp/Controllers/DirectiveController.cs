@@ -20,20 +20,7 @@ namespace NotesApp.Controllers
         [HttpGet]
         public ActionResult SideNav(string UserID)
         {
-            ////UserID= "c6dd5399-18c6-420c-abd0-d15d0a726565";
-            //var url = Request.Url.AbsoluteUri;
-
-            //if (UserID!=null)
-            //{
-            //    var list = new List<tblNote>();
-
-            //    AccountsRepository accountsRepository = new AccountsRepository();
-            //    list = accountsRepository.GetInfo(UserID);
-            //    return View(list);
-            //}
             return View();
         }
-
-       
     }
 }
